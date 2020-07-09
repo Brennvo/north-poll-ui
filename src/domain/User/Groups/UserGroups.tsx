@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import myAxios from "src/config/axios";
-import { Group } from "src/types/group.type";
 import { Link } from "react-router-dom";
 import { useGroup, useGroupDispatch } from "../GroupProvider/GroupProvider";
 import Loading from "src/components/Loading";
