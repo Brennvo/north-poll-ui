@@ -6,14 +6,13 @@ import { GroupProvider } from "./GroupProvider/GroupProvider";
 import NotFound from "../Auth/NotFound";
 import { Link } from "react-router-dom";
 
-const User = () => {
+const AuthenticatedRoutes = () => {
   const auth = useAuth();
 
   return (
     <>
       <p>Authenticated User {auth?.user!.username}</p>
       <Link to="/">Home</Link>
-      <button onClick={() => auth?.logout()}>Logout</button>
       <GroupProvider>
         <Switch>
           {authenticatedRoutes.map(({ path, component, exact }, i) => (
@@ -26,4 +25,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default AuthenticatedRoutes;

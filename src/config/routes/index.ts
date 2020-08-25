@@ -1,7 +1,8 @@
 import React from "react";
 import Home from "src/domain/Visitor/Home";
-import SelectedGroup from "src/domain/User/SelectedGroup";
-import Groups from "src/domain/User/Groups";
+import SelectedGroup from "src/domain/AuthenticatedUser/SelectedGroup";
+import Groups from "src/domain/AuthenticatedUser/Groups";
+import Login from "src/domain/Visitor/Login/Login";
 
 type Route = {
   component: React.FC;
@@ -9,7 +10,10 @@ type Route = {
   exact?: boolean;
 };
 
-const visitorRoutes: Route[] = [{ path: "/", component: Home, exact: true }];
+const visitorRoutes: Route[] = [
+  { path: "/", component: Home, exact: true },
+  { path: "/login", component: Login, exact: true },
+];
 
 const authenticatedRoutes: Route[] = [
   { path: "/", exact: true, component: Groups },

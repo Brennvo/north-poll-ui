@@ -25,6 +25,7 @@ const PollList: React.FC = () => {
     </ul>
   );
 };
+
 const SelectedGroup: React.FC = () => {
   const { groupId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -42,7 +43,7 @@ const SelectedGroup: React.FC = () => {
       .catch(() => {
         dispatch!({ type: "ERROR" });
       });
-  }, [groupId]);
+  }, [groupId, dispatch]);
 
   if (isLoading || !group) {
     return <Loading />;
