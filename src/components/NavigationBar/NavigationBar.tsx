@@ -9,6 +9,8 @@ import {
   MenuItem,
   Box,
   Icon,
+  Avatar,
+  Stack,
 } from "@chakra-ui/core";
 import { useAuth } from "src/domain/Auth/AuthProvider/Auth";
 import LayoutWrapper from "../LayoutWrapper";
@@ -21,7 +23,7 @@ type NavProps = {
 
 const NavBarItem: React.FC<NavProps> = ({ label, url = "" }) => {
   return (
-    <ListItem>
+    <ListItem flexBasis="33%">
       <Link to={url}>
         <Text color="white" as="a" fontFamily="Lato">
           {label}
@@ -35,7 +37,10 @@ const LoggedInDropdown = () => {
   const auth = useAuth();
   return (
     <Menu>
-      <MenuButton color="white">{auth?.user?.username}</MenuButton>
+      <Stack isInline flexBasis="33%" justifyContent="flex-end">
+        <MenuButton color="white">Hello, {auth?.user?.username}</MenuButton>
+        <Avatar name={auth?.user?.username} size="sm" />
+      </Stack>
       <MenuList>
         <MenuItem onClick={() => auth?.logout()}>Logout</MenuItem>
       </MenuList>
@@ -47,7 +52,7 @@ const NavigationBar = () => {
   const auth = useAuth();
 
   return (
-    <Box as="nav" bg="purpleIce" fontFamily="Lato" pt={1} pb={1}>
+    <Box as="nav" bg="purpleIce.500" fontFamily="Lato" pt={1} pb={1}>
       <LayoutWrapper>
         <List
           p={0}
@@ -59,7 +64,7 @@ const NavigationBar = () => {
           justifyContent="space-between"
         >
           <NavBarItem label="Home" />
-          <Icon name="polarBear" size="35px" />
+          <Icon flexBasis="33%" name="polarBear" size="35px" />
           {auth?.isAuthenticated ? (
             <LoggedInDropdown />
           ) : (
