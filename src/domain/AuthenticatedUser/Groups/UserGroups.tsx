@@ -3,6 +3,7 @@ import myAxios from "src/config/axios";
 import { Link } from "react-router-dom";
 import { useGroup, useGroupDispatch } from "../GroupProvider/GroupProvider";
 import Loading from "src/components/Loading";
+import PageHeader from "src/components/PageHeader";
 
 const UserGroups: React.FC = () => {
   const { groups } = useGroup();
@@ -20,7 +21,14 @@ const UserGroups: React.FC = () => {
     <Loading />
   ) : (
     <>
-      <h1>My Groups</h1>
+      <PageHeader
+        title="My Gift Exchanges"
+        hasAction={true}
+        actionText="Create"
+        actionClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+          console.log("clicked")
+        }
+      />
       {groups && (
         <ul>
           {groups.map((group) => (
