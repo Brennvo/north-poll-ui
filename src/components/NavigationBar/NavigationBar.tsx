@@ -19,11 +19,12 @@ import { Link } from "react-router-dom";
 type NavProps = {
   label: string;
   url?: string;
+  textAlign: "left" | "right";
 };
 
-const NavBarItem: React.FC<NavProps> = ({ label, url = "" }) => {
+const NavBarItem: React.FC<NavProps> = ({ label, url = "", textAlign }) => {
   return (
-    <ListItem flexBasis="33%">
+    <ListItem flexBasis="33%" textAlign={textAlign}>
       <Link to={url}>
         <Text color="white" as="a" fontFamily="Lato">
           {label}
@@ -63,12 +64,12 @@ const NavigationBar = () => {
           alignItems="center"
           justifyContent="space-between"
         >
-          <NavBarItem label="Home" />
+          <NavBarItem label="Home" textAlign="left" />
           <Icon flexBasis="33%" name="polarBear" size="35px" />
           {auth?.isAuthenticated ? (
             <LoggedInDropdown />
           ) : (
-            <NavBarItem label="Login" url="/login" />
+            <NavBarItem label="Login" url="/login" textAlign="right" />
           )}
         </List>
       </LayoutWrapper>
