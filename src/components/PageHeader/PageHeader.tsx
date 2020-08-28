@@ -15,8 +15,14 @@ const PageHeader: React.FC<PageHeaderProps> = ({
   actionClick,
 }) => {
   return (
-    <Box d="flex" justifyContent="space-between" alignItems="center">
-      <Heading fontFamily="Noto Sans KR">{title}</Heading>
+    <Box
+      d="flex"
+      justifyContent="space-between"
+      flexWrap="wrap"
+      alignItems="center"
+      mb={[4, 10, 16]}
+    >
+      <Heading>{title}</Heading>
       {hasAction && (
         <Button
           onClick={actionClick}

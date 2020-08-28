@@ -91,6 +91,12 @@ const customTheme = {
     ...theme.icons,
     ...customIcons,
   },
+  fonts: {
+    ...theme.fonts,
+    body: "Noto Sans KR",
+    heading: "Noto Sans KR",
+    mono: "Lato",
+  },
 };
 
 export default customTheme;
