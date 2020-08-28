@@ -63,7 +63,11 @@ const AuthProvider: React.FC = ({ children }) => {
       .then(({ data }) => {
         dispatch({
           type: "SET_USER",
-          payload: { id: data.id, username: data.username },
+          payload: {
+            id: data.id,
+            username: data.username,
+            pictureUrl: data.pictureUrl,
+          },
         });
       })
       .catch(() => dispatch({ type: "INVALIDATE_USER" }));

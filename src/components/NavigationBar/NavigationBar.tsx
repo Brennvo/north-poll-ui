@@ -40,7 +40,11 @@ const LoggedInDropdown = () => {
     <Menu>
       <Stack isInline flexBasis="33%" justifyContent="flex-end">
         <MenuButton color="white">Hello, {auth?.user?.username}</MenuButton>
-        <Avatar name={auth?.user?.username} size="sm" />
+        <Avatar
+          name={auth?.user?.username}
+          size="sm"
+          src={auth?.user?.pictureUrl}
+        />
       </Stack>
       <MenuList>
         <MenuItem onClick={() => auth?.logout()}>Logout</MenuItem>
