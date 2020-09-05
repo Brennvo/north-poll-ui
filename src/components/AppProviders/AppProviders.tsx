@@ -9,13 +9,13 @@ import NavigationBar from "../NavigationBar";
 const AppProviders: React.FC = ({ children }) => {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <ThemeProvider theme={customTheme}>
-          <CSSReset />
+      <ThemeProvider theme={customTheme}>
+        <CSSReset />
+        <AuthProvider>
           <NavigationBar />
           {children}
-        </ThemeProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 };

@@ -1,8 +1,8 @@
 import React, { useReducer, useEffect, useContext } from "react";
-import Loading from "src/components/Loading";
 import { User } from "src/types/user.type";
 import myAxios from "src/config/axios";
 import useAuthGuard from "src/hooks/useAuthGuard";
+import LoadingPage from "src/components/LoadingPage/LoadingPage";
 
 type AuthState = {
   isLoading: boolean;
@@ -84,7 +84,7 @@ const AuthProvider: React.FC = ({ children }) => {
     );
 
   return state.isLoading ? (
-    <Loading />
+    <LoadingPage />
   ) : (
     <AuthStateContext.Provider
       value={{

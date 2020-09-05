@@ -19,11 +19,11 @@ import {
 
 import myAxios from "src/config/axios";
 import { User } from "src/types/user.type";
-import Loading from "src/components/Loading";
 import PageHeader from "src/components/PageHeader";
 import { useGroup, useGroupDispatch } from "../GroupProvider/GroupProvider";
 import { useHistory } from "react-router";
 import { Link as ReactRouterLink } from "react-router-dom";
+import LoadingCards from "src/components/LoadingCards";
 
 type ExchangeCardProps = {
   name: string;
@@ -44,6 +44,7 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({
     <Stack
       bg="white"
       width="100%"
+      //width="18.75rem"
       //height="100%"
       h="14.375rem"
       p="1rem"
@@ -126,7 +127,17 @@ const UserGroups: React.FC = () => {
   }, [dispatch]);
 
   return isLoading ? (
-    <Loading />
+    <>
+      <PageHeader
+        title="My Gift Exchanges"
+        hasAction={true}
+        actionText="Create"
+        actionClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+          history.push("/create")
+        }
+      />
+      <LoadingCards numCards={3} />
+    </>
   ) : (
     <>
       <PageHeader
