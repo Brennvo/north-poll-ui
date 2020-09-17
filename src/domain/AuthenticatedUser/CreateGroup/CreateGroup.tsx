@@ -30,15 +30,22 @@ type Group = {
 };
 
 type InputProps = {
+  /**
+   * The value of the input being rendered to make
+   * the component controlled
+   */
   value?: any;
+
+  /**
+   * Fuction to be called when the input value is changing
+   *
+   * @param value the current value of the input
+   * @param groupProperty the key of {@link Group} in which
+   * the input is updating
+   */
   onChange: (value: string, groupProperty: keyof Group) => void;
 };
 
-interface Date {
-  day: string;
-  month: string;
-  year: string;
-}
 /**
  * User input for giving the group a name
  */
@@ -58,6 +65,12 @@ const GroupNameInput: React.FC<InputProps> = ({ onChange, value }) => {
     />
   );
 };
+
+interface Date {
+  day: string;
+  month: string;
+  year: string;
+}
 
 /**
  * User input for choosing a date in which gifts should
@@ -86,7 +99,7 @@ const PriceLimitInput: React.FC<InputProps> = ({
     const { name: priceToUpdate, value: newValue } = e.target;
     const updatedPriceLimit = {
       ...currValue,
-      [priceToUpdate]: newValue,
+      [priceToUpdate as keyof SpendingLimit]: newValue,
     };
 
     onChange(updatedPriceLimit, STEP.SPENDING_LIMIT);
@@ -136,9 +149,12 @@ interface CreateGroupStep {
   input: React.FC<InputProps>;
 }
 
-interface FormSteps {
-  [key: number]: CreateGroupStep;
-}
+/**
+ * @see https://stackoverflow.com/a/56628792/6201679
+ */
+type FormSteps = {
+  [key in STEP]: CreateGroupStep;
+};
 
 const FORM_STEP: FormSteps = {
   [STEP.NAME]: {
