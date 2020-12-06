@@ -6,6 +6,10 @@ import { AuthProvider } from "../../domain/Auth/AuthProvider/Auth";
 import customTheme from "src/config/theme";
 import NavigationBar from "../NavigationBar";
 
+/**
+ * Used to register global Providers across
+ * the application.
+ */
 const AppProviders: React.FC = ({ children }) => {
   return (
     <BrowserRouter>

@@ -10,6 +10,11 @@ import {
 } from "@chakra-ui/core";
 import NavbarLink from "../NavbarLink/NavbarLink";
 
+/**
+ * When the user is logged in, a drowndown will render.
+ * When they are logged out, a simple link is rendered
+ * to navigate them to login.
+ */
 const DesktopDropdown = () => {
   const auth = useAuth();
 

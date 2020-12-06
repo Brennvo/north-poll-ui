@@ -1,0 +1,12 @@
+{
+  "editor.wordWrap": "on",
+  "editor.cursorBlinking": "smooth",
+  "editor.fontSize": 13.3,
+  "editor.fontFamily": "IBM Plex Mono, Consolas, Fira Code, 'Liberation Mono',Menlo,Courier,monospace",
+  "editor.fontLigatures": true,
+  "editor.letterSpacing": 0.28,
+  "editor.tabSize": 2,
+  "explorer.autoReveal": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true
+}

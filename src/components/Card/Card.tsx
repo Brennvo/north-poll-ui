@@ -2,10 +2,17 @@ import React from "react";
 import { Stack } from "@chakra-ui/core";
 
 type CardProps = {
+  /** Background of the card */
   bg?: string;
+
+  /** Width of the card */
   w?: string;
 };
 
+/**
+ * Used across the application to render content about a
+ * single subject in a predefined space.
+ */
 const Card: React.FC<CardProps> = ({ children, bg, w }) => {
   return (
     <Stack

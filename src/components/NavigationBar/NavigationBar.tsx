@@ -5,6 +5,12 @@ import MobileDropdown from "./MobileDropdown";
 import DesktopDropdown from "./DesktopDropdown";
 import NavbarLink from "./NavbarLink/NavbarLink";
 
+/**
+ * Used at the top of the application to provide users with
+ * a responsive navigation bar for traversing the application's
+ * features. When condensed to a small viewport, a hamburger
+ * menu with a drawer will appear instead of the regular links.
+ */
 const NavigationBar = () => {
   return (
     <Box as="nav" bg="purpleIce.500" fontFamily="Lato" pt={1} pb={1}>

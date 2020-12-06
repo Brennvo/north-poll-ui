@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import moment from "moment";
-import { Select, FormControl, Text, FormLabel, Flex } from "@chakra-ui/core";
+import { getMonth, getDaysInMonth, getDay, getYear } from 'date-fns';
+import { FormControl, Text, Flex } from "@chakra-ui/core";
+import SingleSelect from "../SingleSelect";
 
 const months: string[] = [
   "January",
@@ -17,44 +18,47 @@ const months: string[] = [
   "December",
 ];
 
-interface Date {
-  day: string;
-  month: string;
-  year: string;
-}
+// interface Date {
+//   day: string;
+//   month: string;
+//   year: string;
+// }
 
 type GroupInputProps = {
+  initialDay: number | null;
+  initialMonth: number | null;
+  initialYear: number | null;
   onDateSelection: (date: Date) => void;
   yearsFromNow?: number;
 };
 
 const DateInputs: React.FC<GroupInputProps> = ({
+  initialDay,
+  initialMonth,
+  initialYear,
   onDateSelection,
   yearsFromNow,
 }) => {
-  const [month, setMonth] = useState("");
-  const [day, setDay] = useState("");
-  const [year, setYear] = useState("");
+  const [month, setMonth] = useState(initialMonth);
+  const [day, setDay] = useState(initialDay);
+  const [year, setYear] = useState(initialYear);
 
   const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setMonth(e.target.value);
+    console.log('the month is: ', e.target.value);
+    setMonth(parseInt(e.target.value));
   };
 
   const handleDayChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setDay(e.target.value);
+    setDay(parseInt(e.target.value));
   };
 
   const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setYear(e.target.value);
+    setYear(parseInt(e.target.value));
   };
 
   useEffect(() => {
-    if (month !== "" && day !== "" && year !== "") {
-      onDateSelection({
-        day,
-        month,
-        year,
-      });
+    if (month !== null && day !== null && year !== null) {
+      onDateSelection(new Date(year, month, day));
     }
   }, [month, day, year]);
 
@@ -65,58 +69,69 @@ const DateInputs: React.FC<GroupInputProps> = ({
           <Text>Date:</Text>
         </legend>
         <Flex>
-          <Select
+          <SingleSelect
             value={month}
             mr=".5rem"
             id="month"
-            placeholder="Month"
             onChange={handleMonthChange}
             aria-label="month"
             d="inline-block"
+            placeholder="Month"
           >
-            {months.map((month) => (
-              <option value={month} key={month}>
+            {months.map((month, i) => (
+              <option value={i} key={month}>
                 {month}
               </option>
             ))}
-          </Select>
+          </SingleSelect>
 
-          <Select
-            value={day}
-            mr=".5rem"
-            id="day"
-            placeholder="Day"
-            onChange={handleDayChange}
-            aria-label="day"
-          >
-            {[...Array(moment(month || "January", "MMMM").daysInMonth())].map(
-              (_, monthNum) => (
-                <option value={monthNum + 1} key={monthNum}>
-                  {monthNum + 1}
-                </option>
-              )
-            )}
-          </Select>
 
-          <Select
-            value={year}
-            id="year"
-            placeholder="Year"
-            onChange={handleYearChange}
-            aria-label="year"
-          >
-            {yearsFromNow
-              ? [...Array(yearsFromNow)].map((_, index) => (
-                  <option value={moment().year() + index} key={index}>
-                    {moment().year() + index}
+          {month && year ? (
+            <SingleSelect
+              value={day}
+              mr=".5rem"
+              id="day"
+              placeholder="Day"
+              onChange={handleDayChange}
+              aria-label="day"
+            >
+              {[...Array(getDaysInMonth(new Date(year, month)))].map(
+                (_, monthNum) => (
+                  <option value={monthNum} key={monthNum}>
+                    {monthNum + 1}
                   </option>
-                ))
-              : [...Array(100)].map((_, index) => (
-                  <option value={moment().year() - index} key={index}>
-                    {moment().year() - index}
-                  </option>
-                ))}
-          </Select>
+                )
+              )}
+            </SingleSelect>
+          ) : (
+            <SingleSelect value={null} placeholder="Day" disabled />
+          )}
+
+          {month && year ? (
+            <SingleSelect
+              value={year}
+              id="year"
+              placeholder="Year"
+              onChange={handleYearChange}
+              aria-label="year"
+            >
+              {yearsFromNow
+                ? [...Array(yearsFromNow)].map((_, index) => (
+                    <option value={getYear(new Date()) + index} key={index}>
+                      {getYear(new Date()) + index}
+                    </option>
+                  ))
+                : [...Array(100)].map((_, index) => (
+                    <option value={getYear(new Date()) - index} key={index}>
+                      {getYear(new Date()) - index}
+                    </option>
+                  ))}
+            </SingleSelect>
+
+          ) : (
+              <SingleSelect value={null} placeholder="Year" disabled />
+          )}
+
         </Flex>
       </FormControl>
     </>
