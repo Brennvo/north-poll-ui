@@ -18,7 +18,7 @@ const Card: React.FC<CardProps> = ({ children, bg, w }) => {
     <Stack
       bg={bg || "white"}
       width={w || "100%"}
-      h="14.375rem"
+      h={["12rem", "12rem", "12rem", "14.375rem"]}
       p="1rem"
       borderRadius={5}
       boxShadow="0 0 4px grey"
