@@ -7,6 +7,9 @@ type NavProps = {
   url?: string;
 };
 
+/**
+ * Wrapper component for styling a navigation link
+ */
 const NavbarLink: React.FC<NavProps> = ({ label, url = "" }) => {
   return (
     <Link to={url}>

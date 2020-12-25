@@ -8,6 +8,10 @@ type PageHeaderProps = {
   actionClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
+/**
+ * Used across the application's various pages to render the
+ * top level heading element
+ */
 const PageHeader: React.FC<PageHeaderProps> = ({
   title,
   hasAction,
