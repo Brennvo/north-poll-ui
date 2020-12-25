@@ -131,14 +131,27 @@ const UserGroups: React.FC = () => {
     </>
   ) : (
     <>
-      <PageHeader
+      {/* <PageHeader
         title="My Gift Exchanges"
         hasAction={true}
         actionText="Create"
         actionClick={(e: React.MouseEvent<HTMLButtonElement>) =>
           history.push("/create")
         }
-      />
+      /> */}
+      <Heading>My Gift Exchanges</Heading>
+      <Button
+        mt="2rem"
+        onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+          history.push("/create")
+        }
+        variantColor="purpleIce"
+        variant="solid"
+        color="white"
+        rightIcon="small-add"
+      >
+        Create
+      </Button>
       {groups && (
         <FlexGrid>
           {groups.map((group) => (

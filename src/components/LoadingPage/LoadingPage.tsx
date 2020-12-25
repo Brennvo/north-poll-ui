@@ -3,6 +3,11 @@ import LayoutWrapper from "../LayoutWrapper";
 import { Box, Skeleton } from "@chakra-ui/core";
 import Loading from "../Loading";
 
+/**
+ * Used in the application when initial data (user info, page data)
+ * is being fetched asychronously. It replaces the header bar with
+ * a gradient and adds a loading spinner where the main content will render.
+ */
 const LoadingPage: React.FC = () => {
   return (
     <>

@@ -1,15 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useReducer, useState } from "react";
+import { Button, Stack, Text, Progress, FormLabel, Box } from "@chakra-ui/core";
+import myAxios from "src/config/axios";
 import {
-  Button,
-  Stack,
-  Input,
-  Text,
-  Progress,
-  InputGroup,
-  InputLeftAddon,
-} from "@chakra-ui/core";
-import DateInputs from "src/components/DateInputs";
-import Card from "src/components/Card";
+  GroupNameInput,
+  ExchangeDateInput,
+  PriceLimitInput,
+  ConfirmInputs,
+} from "./Steps/Steps";
+import InputAlert from "src/components/InputAlert";
 
 enum STEP {
   NAME = 0,
@@ -18,283 +16,259 @@ enum STEP {
   CONFIRM = 3,
 }
 
-type SpendingLimit = {
-  minPrice: string;
-  maxPrice: string;
-};
-
-type Group = {
-  [STEP.NAME]: string;
-  [STEP.DATE]: string;
-  [STEP.SPENDING_LIMIT]: SpendingLimit;
-};
-
-type InputProps = {
-  /**
-   * The value of the input being rendered to make
-   * the component controlled
-   */
-  value?: any;
-
-  /**
-   * Fuction to be called when the input value is changing
-   *
-   * @param value the current value of the input
-   * @param groupProperty the key of {@link Group} in which
-   * the input is updating
-   */
-  onChange: (value: string, groupProperty: keyof Group) => void;
-};
-
-/**
- * User input for giving the group a name
- */
-const GroupNameInput: React.FC<InputProps> = ({ onChange, value }) => {
-  return (
-    <Input
-      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-        onChange(e.target.value, STEP.NAME)
-      }
-      aria-label="Group name"
-      w="100%"
-      maxWidth="25rem"
-      textAlign="center"
-      size="md"
-      placeholder="Group Name"
-      value={value}
-    />
-  );
-};
-
-interface Date {
-  day: string;
-  month: string;
-  year: string;
-}
-
-/**
- * User input for choosing a date in which gifts should
- * be chosen by
- */
-const ExchangeDateSelection: React.FC<InputProps> = ({ onChange }) => {
-  return (
-    <DateInputs
-      yearsFromNow={2}
-      onDateSelection={(date: Date) =>
-        onChange(`${date.year}-${date.month}-${date.day}`, STEP.DATE)
-      }
-    />
-  );
-};
-
-/**
- * User input for setting a price floor and price ceiling
- * for gifts to be purchased for each participant
- */
-const PriceLimitInput: React.FC<InputProps> = ({
-  onChange,
-  value: currValue,
-}) => {
-  const handlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name: priceToUpdate, value: newValue } = e.target;
-    const updatedPriceLimit = {
-      ...currValue,
-      [priceToUpdate as keyof SpendingLimit]: newValue,
-    };
-
-    onChange(updatedPriceLimit, STEP.SPENDING_LIMIT);
-  };
-
-  return (
-    <>
-      <InputGroup>
-        <InputLeftAddon children="$" color="gunmentalIce" fontSize="1.2em" />
-        <Input
-          value={currValue.minPrice}
-          name="minPrice"
-          onChange={handlChange}
-          type="number"
-          placeholder="Minimum gift price"
-        />
-      </InputGroup>
-      <InputGroup>
-        <InputLeftAddon children="$" color="gunmentalIce" fontSize="1.2em" />
-        <Input
-          name="maxPrice"
-          value={currValue.maxPrice}
-          onChange={handlChange}
-          type="number"
-          placeholder="Maximum gift price"
-        />
-      </InputGroup>
-    </>
-  );
-};
-
-/**
- * Final screen to verify before submitting
- */
-const Confirm: React.FC<InputProps> = ({ value: group }) => {
-  return (
-    <Card w="max-content">
-      <Text>Name: {group[STEP.NAME]}</Text>
-      <Text>DATE: {group[STEP.DATE]}</Text>
-      {group[STEP.SPENDING_LIMIT] && <Text>Spending limit: TBD</Text>}
-    </Card>
-  );
-};
-
-interface CreateGroupStep {
-  label: string;
-  input: React.FC<InputProps>;
-}
-
-/**
- * @see https://stackoverflow.com/a/56628792/6201679
- */
-type FormSteps = {
-  [key in STEP]: CreateGroupStep;
-};
-
-const FORM_STEP: FormSteps = {
+const FORM_STEP = {
   [STEP.NAME]: {
+    name: "name",
     label: "Make your exchange stand out with a creative name.",
-    input: GroupNameInput,
   },
   [STEP.DATE]: {
-    label: "Select the day in which gifts should be finalized.",
-    input: ExchangeDateSelection,
+    name: "date",
+    label: "Choose a date that all gifts should be chosen by.",
   },
   [STEP.SPENDING_LIMIT]: {
-    label: "Add an optional spending limit for each gift.",
-    input: PriceLimitInput,
+    name: "spendingLimit",
+    label: "Add an optional spending limit for gift suggestions.",
   },
   [STEP.CONFIRM]: {
-    label: "Confirm your group before creating your exchange experience.",
-    input: Confirm,
+    name: "",
+    label: "Are you ready to start your exchange experience?",
   },
+};
+
+type CreateGroupNavigatorProps = {
+  /** The step the user is in while creating a group */
+  currentStep: number;
+
+  /** Click handler when user navigates a step backward */
+  handlePrevious: (e: React.MouseEvent) => void;
+
+  /** Click handler when user navigates a step forward */
+  handleNext: (e: React.MouseEvent) => void;
+};
+
+type SpendingLimit = {
+  minPrice: number;
+  maxPrice: number;
+};
+
+type GroupContext = {
+  name: string;
+  votingEndDate: Date;
+  spendingLimit: SpendingLimit | null;
+};
+
+type Action =
+  | { type: "CLEAR_SPENDING_LIMIT" }
+  | { type: "UPDATE_NAME"; name: string }
+  | { type: "UPDATE_DATE"; date: Date }
+  | { type: "UPDATE_MIN_PRICE"; minPrice: number }
+  | { type: "UPDATE_MAX_PRICE"; maxPrice: number };
+
+const GroupStateContext = React.createContext<GroupContext>({} as GroupContext);
+const GroupDispatchContext = React.createContext<Function | undefined>(
+  undefined
+);
+
+const useGroupStateContext = () => useContext(GroupStateContext);
+const useGroupDispatchContext = () => useContext(GroupDispatchContext);
+const useGroupContext = () => {
+  const state = useGroupStateContext();
+  const dispatch = useGroupDispatchContext();
+
+  return { state, dispatch };
+};
+
+function groupReducer(state: GroupContext, action: Action): GroupContext {
+  switch (action.type) {
+    case "UPDATE_NAME":
+      return {
+        ...state,
+        name: action.name,
+      };
+    case "UPDATE_DATE":
+      return {
+        ...state,
+        votingEndDate: action.date,
+      };
+    case "UPDATE_MIN_PRICE":
+      return {
+        ...state,
+        spendingLimit: {
+          ...(state.spendingLimit as SpendingLimit),
+          minPrice: action.minPrice,
+        },
+      };
+    case "UPDATE_MAX_PRICE":
+      return {
+        ...state,
+        spendingLimit: {
+          ...(state.spendingLimit as SpendingLimit),
+          maxPrice: action.maxPrice,
+        },
+      };
+    case "CLEAR_SPENDING_LIMIT":
+      return {
+        ...state,
+        spendingLimit: null,
+      };
+    default:
+      return {
+        ...state,
+      };
+  }
+}
+
+const initialState: GroupContext = {
+  name: "",
+  votingEndDate: new Date(),
+  spendingLimit: null,
+};
+
+/**
+ * Enables a user to move backward and forward in the group
+ * creation form process
+ */
+const CreateGroupNavigator: React.FC<CreateGroupNavigatorProps> = ({
+  currentStep,
+  handlePrevious,
+  handleNext,
+}) => {
+  return (
+    <Stack isInline mt="1.5rem" justify="space-between">
+      {currentStep !== STEP.NAME && (
+        <Button
+          variant="link"
+          isDisabled={currentStep === 0}
+          onClick={handlePrevious}
+          leftIcon="arrow-back"
+        >
+          Back
+        </Button>
+      )}
+
+      {currentStep === STEP.SPENDING_LIMIT && (
+        <Button
+          position="relative"
+          variant="link"
+          variantColor="black"
+          rightIcon="arrow-forward"
+          onClick={handleNext}
+        >
+          Skip
+        </Button>
+      )}
+    </Stack>
+  );
 };
 
 const CreateGroup = () => {
   const [step, setStep] = useState<STEP>(STEP.NAME);
-  const [group, setGroup] = useState<Group>({
-    [STEP.NAME]: "",
-    [STEP.DATE]: "",
-    [STEP.SPENDING_LIMIT]: { minPrice: "", maxPrice: "" },
-  });
+  const [group, dispatch] = useReducer(groupReducer, initialState);
+  const [errors, setErrors] = useState("");
 
-  const CurrentInput = FORM_STEP[step].input;
+  const handleConfirmStep = () => {
+    if (step === STEP.SPENDING_LIMIT) {
+      // They will only hit the continue button when the spending limit is not null
+      if (group.spendingLimit!.minPrice > group.spendingLimit!.maxPrice) {
+        setErrors(
+          "The minimum gift price must be less than the maximum gift price."
+        );
+        return;
+      }
+    } else if (step === STEP.NAME) {
+      if (group.name === "") {
+        setErrors("Your group must have a name.");
+        return;
+      }
+    }
 
-  const handleChange = (value: string, name: keyof Group) => {
-    setGroup((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setErrors("");
+    setStep((prevStep) => ++prevStep);
+  };
+
+  const handleSkipStep = () => {
+    setStep((prev) => ++prev);
+    setErrors("");
+    if (step === STEP["SPENDING_LIMIT"]) {
+      dispatch({ type: "CLEAR_SPENDING_LIMIT" });
+    }
+  };
+
+  const handlePreviousStep = () => {
+    setErrors("");
+    setStep((prev) => --prev);
   };
 
   return (
-    <>
-      {/* <Heading mb="1.5rem" textAlign="center">
-        {group.name || "New Gift Exchange"}
-      </Heading> */}
-      <Progress
-        value={(step / (Object.keys(FORM_STEP).length - 1)) * 100}
-        color="green"
-        hasStripe
-        mb="2rem"
-        size="sm"
-        // width={["100%", "100%", "90%", "75%"]}
-        // ml="auto"
-        // mr="auto"
-        position="absolute"
-        left="0"
-        width="100%"
-      />
+    <GroupStateContext.Provider value={group}>
+      <GroupDispatchContext.Provider value={dispatch}>
+        <Progress
+          value={(step / (Object.keys(FORM_STEP).length - 1)) * 100}
+          color="green"
+          hasStripe
+          mb="2rem"
+          size="sm"
+          position="absolute"
+          left="0"
+          width="100%"
+        />
 
-      <Stack isInline mt="1.5rem" justify="space-between">
-        {step !== STEP.NAME && (
-          <Button
-            variant="link"
-            isDisabled={step === 0}
-            onClick={() => setStep((prev) => --prev)}
-            leftIcon="arrow-back"
-          >
-            Back
-          </Button>
-        )}
-
-        {step === STEP.SPENDING_LIMIT && (
-          <Button
-            position="relative"
-            variant="link"
-            variantColor="black"
-            rightIcon="arrow-forward"
-            onClick={() => setStep((prev) => ++prev)}
-          >
-            Skip
-          </Button>
-        )}
-      </Stack>
-
-      <fieldset>
-        <Stack as="section" align="center" spacing={5} mt="2rem">
-          <legend>
-            <Text
-              textAlign="center"
-              mb={[4, 6, 6, 6]}
-              fontFamily="Noto Sans KR"
-              fontSize={["lg", "xl", "2xl", "3xl"]}
-              fontWeight="bold"
-              m={{
-                xs: "0 0rem 1.5rem 0rem",
-                sm: "0 0rem 1.5rem 0rem",
-                md: "0 5rem 1.5rem 5rem",
-                lg: "0 0 1.5rem 0",
-                xl: "0 0 1.5rem 0",
-              }}
-            >
-              {FORM_STEP[step].label}
-            </Text>
-          </legend>
-
-          <CurrentInput
-            onChange={handleChange}
-            value={step === STEP.CONFIRM ? group : group[step]}
+        <Box
+          pl={[".5rem", "2rem", "1rem", "0"]}
+          pr={[".5rem", "2rem", "1rem", "0"]}
+        >
+          <CreateGroupNavigator
+            currentStep={step}
+            handlePrevious={handlePreviousStep}
+            handleNext={handleSkipStep}
           />
 
-          {step !== STEP.CONFIRM ? (
-            <Stack isInline justify="center" mt="2rem">
+          <Stack as="section" align="center" mt="2rem">
+            {step === STEP.NAME && <GroupNameInput isInvalid={errors !== ""} />}
+
+            {step === STEP.DATE && <ExchangeDateInput />}
+
+            {step === STEP.SPENDING_LIMIT && (
+              <PriceLimitInput isInvalid={errors !== ""} />
+            )}
+
+            {step === STEP.CONFIRM && <ConfirmInputs />}
+
+            {errors && <InputAlert mt=".5rem" message={errors} />}
+
+            {step !== STEP.CONFIRM ? (
               <Button
-                variantColor={
-                  step !== STEP.SPENDING_LIMIT ? "blueIce" : "green"
-                }
-                isDisabled={
-                  group[step] === "" ||
-                  (step === STEP.SPENDING_LIMIT &&
-                    (group[STEP.SPENDING_LIMIT].minPrice === "" ||
-                      group[STEP.SPENDING_LIMIT].maxPrice === ""))
-                }
-                onClick={() => {
-                  step !== STEP.SPENDING_LIMIT
-                    ? setStep((prev) => ++prev)
-                    : console.log("submitting group: ", group);
-                }}
+                mt="2rem"
+                variantColor="blueIce"
+                onClick={handleConfirmStep}
               >
                 Continue
               </Button>
-            </Stack>
-          ) : (
-            <Button
-              variantColor="green"
-              onClick={() => console.log("confirming")}
-            >
-              Finish!
-            </Button>
-          )}
-        </Stack>
-      </fieldset>
-    </>
+            ) : (
+              <Button
+                mt="2rem"
+                variantColor="green"
+                onClick={() =>
+                  myAxios.post("/group", {
+                    groupName: group.name,
+                    voteEndDt: group.votingEndDate,
+                    spendingLimit: {
+                      minPrice: group.spendingLimit?.minPrice || null,
+                      maxPrice: group.spendingLimit?.maxPrice || null,
+                    },
+                  })
+                }
+              >
+                Finish!
+              </Button>
+            )}
+          </Stack>
+        </Box>
+      </GroupDispatchContext.Provider>
+    </GroupStateContext.Provider>
   );
 };
+
+export { useGroupContext, useGroupStateContext, useGroupDispatchContext };
 
 export default CreateGroup;

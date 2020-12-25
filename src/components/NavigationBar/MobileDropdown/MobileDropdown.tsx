@@ -20,6 +20,11 @@ type MenuItemProps = {
   to?: string;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
+
+/**
+ * A styled link that should be used in a mobile
+ * hamburger menu's list.
+ */
 const MenuItem: React.FC<MenuItemProps> = ({
   label,
   iconName,
@@ -57,6 +62,11 @@ const MenuItem: React.FC<MenuItemProps> = ({
   );
 };
 
+/**
+ * Renders a hamburger icon that when clicked,
+ * opens a sliding drawer with menu items (links)
+ * that are hidden by default in the mobile view.
+ */
 const MobileDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const auth = useAuth();

@@ -1,6 +1,29 @@
 import React from "react";
 import { List, ListItem } from "@chakra-ui/core";
 
+/**
+ * Used across the application to render a grid layout. It
+ * uses a flexbox container to implement the grid style by
+ * manipulating margins and appending invisble flex-items
+ * to the grid for styling purposes if necessary.
+ *  
+ * @example
+ * Without this component, a grid would appear as follows, with
+ * a plus (+) representing space taken up by each flex-item.
+ 
+   |  ++   ++   ++   |
+   |  ++   ++++++++  |
+
+  * As we can see, the last row stretches its last child to take
+  * the rest of the row's width. However, when using the FlexGrid,
+  * a grid will appear as follows, with a minus (-) representing
+  * an invisible flex-item.
+  * 
+   |  ++   ++   ++   |
+   |  ++   ++   --   |
+  
+  * @see FlexGridItem
+ */
 const FlexGrid: React.FC = ({ children }) => {
   return (
     <List
