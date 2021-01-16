@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useAuth } from "./domain/Auth/AuthProvider/Auth";
-import { Box } from "@chakra-ui/core";
+import { Box } from "@chakra-ui/react";
 
 import AuthenticatedUser from "./domain/AuthenticatedUser";
 import Visitor from "./domain/Visitor";

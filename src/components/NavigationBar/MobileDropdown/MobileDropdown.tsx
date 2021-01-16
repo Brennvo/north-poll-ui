@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import {
   IconButton,
   Drawer,
@@ -10,13 +10,19 @@ import {
   List,
   ListItem,
   Button,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { useAuth } from "src/domain/Auth/AuthProvider/Auth";
 import { Link } from "react-router-dom";
+import {
+  HomeIcon,
+  LightMenuIcon,
+  LogoutIcon,
+} from "src/config/theme/customIcons";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
 
 type MenuItemProps = {
   label: string;
-  iconName: string;
+  icon: React.ReactElement<any, string>;
   to?: string;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
@@ -25,12 +31,7 @@ type MenuItemProps = {
  * A styled link that should be used in a mobile
  * hamburger menu's list.
  */
-const MenuItem: React.FC<MenuItemProps> = ({
-  label,
-  iconName,
-  to,
-  onClick,
-}) => {
+const MenuItem: React.FC<MenuItemProps> = ({ label, icon, to, onClick }) => {
   return onClick === undefined ? (
     <Button
       fontSize="1.2rem"
@@ -38,7 +39,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
       p={0}
       bg="transparent"
       // @ts-ignore
-      leftIcon={iconName}
+      icon={icon}
       // @ts-ignore
       to={to}
       letterSpacing="2px"
@@ -52,7 +53,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
       p={0}
       bg="transparent"
       // @ts-ignore
-      leftIcon={iconName}
+      leftIcon={icon}
       // @ts-ignore
       to={to}
       letterSpacing="2px"
@@ -78,9 +79,9 @@ const MobileDropdown = () => {
         aria-label={isOpen ? "Close menu" : "Open menu"}
         display={{ sm: "block", md: "none" }}
         // @ts-ignore
-        icon="lightMenu"
+        icon={<LightMenuIcon />}
         bg="transparent"
-        variantColor="purpleIce"
+        colorScheme="purpleIce"
       />
       <Drawer
         isOpen={isOpen}
@@ -95,13 +96,13 @@ const MobileDropdown = () => {
           <DrawerBody>
             <List>
               <ListItem m="1rem 0 1rem 0">
-                <MenuItem iconName="home" label="Home" to="/" />
+                <MenuItem icon={<HomeIcon />} label="Home" to="/" />
               </ListItem>
               <ListItem>
                 {auth?.isAuthenticated ? (
                   <MenuItem
                     label="Logout"
-                    iconName="logout"
+                    icon={<LogoutIcon />}
                     onClick={() => {
                       auth.logout();
                       setIsOpen(false);
@@ -110,7 +111,7 @@ const MobileDropdown = () => {
                 ) : (
                   <MenuItem
                     label="Login"
-                    iconName="arrow-forward"
+                    icon={<ArrowForwardIcon />}
                     to="/login"
                   />
                 )}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Skeleton } from "@chakra-ui/core";
+import { Skeleton } from "@chakra-ui/react";
 import FlexGrid from "../FlexGrid";
 import FlexGridItem from "../FlexGridItem";
 import Card from "../Card";

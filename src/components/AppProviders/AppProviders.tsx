@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
-import { ThemeProvider, CSSReset } from "@chakra-ui/core";
+import { ChakraProvider, CSSReset } from "@chakra-ui/react";
 
 import { AuthProvider } from "../../domain/Auth/AuthProvider/Auth";
 import customTheme from "src/config/theme";
@@ -13,13 +13,12 @@ import NavigationBar from "../NavigationBar";
 const AppProviders: React.FC = ({ children }) => {
   return (
     <BrowserRouter>
-      <ThemeProvider theme={customTheme}>
-        <CSSReset />
+      <ChakraProvider theme={customTheme}>
         <AuthProvider>
           <NavigationBar />
           {children}
         </AuthProvider>
-      </ThemeProvider>
+      </ChakraProvider>
     </BrowserRouter>
   );
 };

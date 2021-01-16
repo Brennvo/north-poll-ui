@@ -7,7 +7,7 @@ import {
   Avatar,
   MenuList,
   MenuItem,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import NavbarLink from "../NavbarLink/NavbarLink";
 
 /**

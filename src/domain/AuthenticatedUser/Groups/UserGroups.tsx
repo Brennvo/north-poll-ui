@@ -13,7 +13,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 
 import myAxios from "src/config/axios";
 import { User } from "src/types/user.type";
@@ -25,6 +25,7 @@ import LoadingCards from "src/components/LoadingCards";
 import FlexGrid from "src/components/FlexGrid";
 import FlexGridItem from "src/components/FlexGridItem";
 import Card from "src/components/Card";
+import { SettingsIcon, SmallAddIcon } from "@chakra-ui/icons";
 
 type ExchangeCardProps = {
   name: string;
@@ -51,7 +52,7 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({
           spacing={0}
         >
           <Badge
-            variantColor={moment(date).isBefore(new Date()) ? "red" : "green"}
+            colorScheme={moment(date).isBefore(new Date()) ? "red" : "green"}
           >
             {moment(date).isBefore(new Date()) ? "Polls closed" : "Polls open"}
           </Badge>
@@ -59,9 +60,9 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({
             <IconButton
               as={MenuButton}
               aria-label="Settings"
-              variantColor="blackIce"
+              colorScheme="blackIce"
               variant="outline"
-              icon="settings"
+              icon={<SettingsIcon />}
               size="xs"
             />
             <MenuList>
@@ -85,7 +86,7 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({
             as={ReactRouterLink}
             // @ts-ignore
             to={`/group/${groupId}`}
-            variantColor="purpleIce"
+            colorScheme="purpleIce"
           >
             Enter
           </Button>
@@ -145,10 +146,10 @@ const UserGroups: React.FC = () => {
         onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
           history.push("/create")
         }
-        variantColor="purpleIce"
+        colorScheme="purpleIce"
         variant="solid"
         color="white"
-        rightIcon="small-add"
+        rightIcon={<SmallAddIcon />}
       >
         Create
       </Button>

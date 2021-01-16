@@ -1,11 +1,7 @@
-import { theme } from "@chakra-ui/core";
+import { extendTheme } from "@chakra-ui/react";
 
-import customIcons from "./customIcons";
-
-const customTheme = {
-  ...theme,
+const theme = extendTheme({
   colors: {
-    ...theme.colors,
     transparent: "transparent",
     //purpleIce: "#2a3d82",
     purpleIce: {
@@ -87,16 +83,11 @@ const customTheme = {
     },
     background: "#f1f3ff",
   },
-  icons: {
-    ...theme.icons,
-    ...customIcons,
-  },
   fonts: {
-    ...theme.fonts,
     body: "Noto Sans KR",
     heading: "Noto Sans KR",
     mono: "Lato",
   },
-};
+});
 
-export default customTheme;
+export default theme;

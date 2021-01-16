@@ -27,7 +27,7 @@ const PollList: React.FC = () => {
 };
 
 const SelectedGroup: React.FC = () => {
-  const { groupId } = useParams();
+  const { groupId } = useParams<{ groupId: string }>();
   const [isLoading, setIsLoading] = useState(true);
   const { selectedGroup: group } = useGroup();
   const dispatch = useGroupDispatch();

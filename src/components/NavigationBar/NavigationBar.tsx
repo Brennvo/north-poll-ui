@@ -1,9 +1,10 @@
 import React from "react";
-import { List, ListItem, Box, Icon } from "@chakra-ui/core";
+import { List, ListItem, Box, Icon } from "@chakra-ui/react";
 import LayoutWrapper from "../LayoutWrapper";
 import MobileDropdown from "./MobileDropdown";
 import DesktopDropdown from "./DesktopDropdown";
 import NavbarLink from "./NavbarLink/NavbarLink";
+import { PolarBearIcon } from "src/config/theme/customIcons";
 
 /**
  * Used at the top of the application to provide users with
@@ -37,7 +38,8 @@ const NavigationBar = () => {
             flexBasis={{ md: "33%" }}
             textAlign="center"
           >
-            <Icon name="polarBear" size="35px" />
+            <PolarBearIcon />
+            {/* <Icon name="polarBear" size="35px" /> */}
           </ListItem>
 
           {/* Desktop dropdown */}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Text } from "@chakra-ui/core";
+import { Box, Text } from "@chakra-ui/react";
 
 export const Table: React.FC = ({ children }) => {
   return (

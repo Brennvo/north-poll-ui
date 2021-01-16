@@ -9,7 +9,7 @@ const Poll: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { selectedGroup: group } = useGroup();
   const dispatch = useGroupDispatch();
-  const { groupId, pollId } = useParams();
+  const { groupId, pollId } = useParams<{ groupId: string; pollId: string }>();
 
   useEffect(() => {
     setIsLoading(true);

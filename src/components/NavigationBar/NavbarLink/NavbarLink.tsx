@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Text } from "@chakra-ui/core";
+import { Text } from "@chakra-ui/react";
 
 type NavProps = {
   label: string;

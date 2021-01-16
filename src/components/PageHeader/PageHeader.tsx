@@ -1,5 +1,6 @@
 import React from "react";
-import { Heading, Button, Box } from "@chakra-ui/core";
+import { Heading, Button, Box } from "@chakra-ui/react";
+import { SmallAddIcon } from "@chakra-ui/icons";
 
 type PageHeaderProps = {
   title: string;
@@ -30,10 +31,10 @@ const PageHeader: React.FC<PageHeaderProps> = ({
       {hasAction && (
         <Button
           onClick={actionClick}
-          variantColor="purpleIce"
+          colorScheme="purpleIce"
           variant="solid"
           color="white"
-          rightIcon="small-add"
+          rightIcon={<SmallAddIcon />}
         >
           {actionText}
         </Button>

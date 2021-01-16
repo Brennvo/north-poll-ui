@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, InputGroup, InputLeftAddon } from "@chakra-ui/core";
+import { Icon, InputGroup, InputLeftAddon } from "@chakra-ui/react";
 import ReactDatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
