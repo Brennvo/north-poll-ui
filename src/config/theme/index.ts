@@ -1,9 +1,7 @@
-import { theme } from "@chakra-ui/react";
+import { extendTheme } from "@chakra-ui/react";
 
-const customTheme = {
-  ...theme,
+const theme = extendTheme({
   colors: {
-    ...theme.colors,
     transparent: "transparent",
     //purpleIce: "#2a3d82",
     purpleIce: {
@@ -86,11 +84,10 @@ const customTheme = {
     background: "#f1f3ff",
   },
   fonts: {
-    ...theme.fonts,
     body: "Noto Sans KR",
     heading: "Noto Sans KR",
     mono: "Lato",
   },
-};
+});
 
-export default customTheme;
+export default theme;
