@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Box, Spinner } from "@chakra-ui/core";
+import { Text, Box, Spinner } from "@chakra-ui/react";
 
 const Loading: React.FC = () => {
   return <Spinner size="xl" />;

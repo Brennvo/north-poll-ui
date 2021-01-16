@@ -1,5 +1,5 @@
 import React from "react";
-import { ListItem } from "@chakra-ui/core";
+import { ListItem } from "@chakra-ui/react";
 
 /**
  * Used inside of a FlexGrid to render proper

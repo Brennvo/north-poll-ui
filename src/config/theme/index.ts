@@ -1,6 +1,4 @@
-import { theme } from "@chakra-ui/core";
-
-import customIcons from "./customIcons";
+import { theme } from "@chakra-ui/react";
 
 const customTheme = {
   ...theme,
@@ -86,10 +84,6 @@ const customTheme = {
       900: "#0c0e0e",
     },
     background: "#f1f3ff",
-  },
-  icons: {
-    ...theme.icons,
-    ...customIcons,
   },
   fonts: {
     ...theme.fonts,

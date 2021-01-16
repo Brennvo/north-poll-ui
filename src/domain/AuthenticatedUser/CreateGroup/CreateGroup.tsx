@@ -1,5 +1,7 @@
 import React, { useContext, useReducer, useState } from "react";
-import { Button, Stack, Text, Progress, FormLabel, Box } from "@chakra-ui/core";
+import { Button, Stack, Progress, Box } from "@chakra-ui/react";
+import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
+
 import myAxios from "src/config/axios";
 import {
   GroupNameInput,
@@ -140,7 +142,7 @@ const CreateGroupNavigator: React.FC<CreateGroupNavigatorProps> = ({
           variant="link"
           isDisabled={currentStep === 0}
           onClick={handlePrevious}
-          leftIcon="arrow-back"
+          leftIcon={<ArrowBackIcon />}
         >
           Back
         </Button>
@@ -150,8 +152,8 @@ const CreateGroupNavigator: React.FC<CreateGroupNavigatorProps> = ({
         <Button
           position="relative"
           variant="link"
-          variantColor="black"
-          rightIcon="arrow-forward"
+          colorScheme="black"
+          rightIcon={<ArrowForwardIcon />}
           onClick={handleNext}
         >
           Skip
@@ -204,7 +206,7 @@ const CreateGroup = () => {
       <GroupDispatchContext.Provider value={dispatch}>
         <Progress
           value={(step / (Object.keys(FORM_STEP).length - 1)) * 100}
-          color="green"
+          colorScheme="green"
           hasStripe
           mb="2rem"
           size="sm"
@@ -239,7 +241,7 @@ const CreateGroup = () => {
             {step !== STEP.CONFIRM ? (
               <Button
                 mt="2rem"
-                variantColor="blueIce"
+                colorScheme="blueIce"
                 onClick={handleConfirmStep}
               >
                 Continue
@@ -247,7 +249,7 @@ const CreateGroup = () => {
             ) : (
               <Button
                 mt="2rem"
-                variantColor="green"
+                colorScheme="green"
                 onClick={() =>
                   myAxios.post("/group", {
                     groupName: group.name,

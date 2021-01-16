@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { getMonth, getDaysInMonth, getDay, getYear } from 'date-fns';
-import { FormControl, Text, Flex } from "@chakra-ui/core";
+import { getMonth, getDaysInMonth, getDay, getYear } from "date-fns";
+import { FormControl, Text, Flex } from "@chakra-ui/react";
 import SingleSelect from "../SingleSelect";
 
 const months: string[] = [
@@ -44,7 +44,7 @@ const DateInputs: React.FC<GroupInputProps> = ({
   const [year, setYear] = useState(initialYear);
 
   const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log('the month is: ', e.target.value);
+    console.log("the month is: ", e.target.value);
     setMonth(parseInt(e.target.value));
   };
 
@@ -84,7 +84,6 @@ const DateInputs: React.FC<GroupInputProps> = ({
               </option>
             ))}
           </SingleSelect>
-
 
           {month && year ? (
             <SingleSelect
@@ -127,11 +126,9 @@ const DateInputs: React.FC<GroupInputProps> = ({
                     </option>
                   ))}
             </SingleSelect>
-
           ) : (
-              <SingleSelect value={null} placeholder="Year" disabled />
+            <SingleSelect value={null} placeholder="Year" disabled />
           )}
-
         </Flex>
       </FormControl>
     </>

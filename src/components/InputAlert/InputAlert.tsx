@@ -1,4 +1,5 @@
-import { Box, BoxProps, Icon, Text } from "@chakra-ui/core";
+import { WarningTwoIcon } from "@chakra-ui/icons";
+import { Box, BoxProps, Icon, Text } from "@chakra-ui/react";
 import React from "react";
 
 type InputAlertProps = {
@@ -16,7 +17,7 @@ const InputAlert: React.FC<InputAlertProps & BoxProps> = ({
 }) => {
   return (
     <Box d="flex" alignItems="center" {...rest}>
-      <Icon name="warning-2" color="red.500" focusable={false} mr="1rem" />{" "}
+      <WarningTwoIcon color="red.500" focusable={false} mr="1rem" />{" "}
       <Text m="0" color="red.600">
         {message}
       </Text>

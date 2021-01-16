@@ -7,7 +7,7 @@ import {
   InputGroup,
   InputLeftAddon,
   Text,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { format } from "date-fns";
 import DatePicker from "src/components/DatePicker";
 import { Table, TableRow, TableHead, TableData } from "src/components/Table";
@@ -28,22 +28,21 @@ const StepLabel: React.FC<LabelProps & BoxProps> = ({
 }) => {
   return (
     <FormLabel
-      mb={[4, 6, 6, 6]}
-      fontFamily="Noto Sans KR"
-      fontSize={["lg", "xl", "2xl", "3xl"]}
-      fontWeight="bold"
-      textAlign="center"
-      m={{
-        xs: "0 0rem 1.5rem 0rem",
-        sm: "0 0rem 1.5rem 0rem",
-        md: "0 5rem 1.5rem 5rem",
-        lg: "0 0 1.5rem 0",
-        xl: "0 0 1.5rem 0",
-      }}
-      pl={["2rem", "2rem", "1rem", "0"]}
-      pr={["2rem", "2rem", "1rem", "0"]}
+      // mb={[4, 6, 6, 6]}
+      // fontFamily="Noto Sans KR"
+      // fontSize={["lg", "xl", "2xl", "3xl"]}
+      // fontWeight="bold"
+      // textAlign="center"
+      // m={{
+      //   xs: "0 0rem 1.5rem 0rem",
+      //   sm: "0 0rem 1.5rem 0rem",
+      //   md: "0 5rem 1.5rem 5rem",
+      //   lg: "0 0 1.5rem 0",
+      //   xl: "0 0 1.5rem 0",
+      // }}
+      // pl={["2rem", "2rem", "1rem", "0"]}
+      // pr={["2rem", "2rem", "1rem", "0"]}
       htmlFor={id}
-      {...rest}
     >
       {children}
     </FormLabel>

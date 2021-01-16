@@ -1,5 +1,5 @@
 import React from "react";
-import { List, ListItem } from "@chakra-ui/core";
+import { List, ListItem } from "@chakra-ui/react";
 
 /**
  * Used across the application to render a grid layout. It
