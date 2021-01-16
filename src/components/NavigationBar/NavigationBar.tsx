@@ -38,8 +38,7 @@ const NavigationBar = () => {
             flexBasis={{ md: "33%" }}
             textAlign="center"
           >
-            <PolarBearIcon />
-            {/* <Icon name="polarBear" size="35px" /> */}
+            <PolarBearIcon boxSize="35px" />
           </ListItem>
 
           {/* Desktop dropdown */}
